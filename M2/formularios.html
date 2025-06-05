@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularios</title>
+</head>
+<body>
+    <h1>Formulario de registro:</h1>
+    <form action="#" method="POST">
+        <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" />
+        </div>
+        <br>
+        <div>
+            <label for="edad">Edad:</label>
+            <input type="number" id="edad" name="edad" />
+        </div>
+        <br>
+        <div>
+            <label for="email">Correo electrónico:</label>
+            <input type="email" id="email" name="email" />
+        </div>
+        <div>
+                <label for="clave">Contraseña: </label>
+                <input type="password" id="clave" name="clave" />
+            </div>
+            <div>
+                <label for="fecha_nacimiento">Fecha de nacimiento: </label>
+                <input type="datetime-local" id="fecha_nacimiento" name="fecha_nacimiento" >
+            </div>
+            <div>
+                <label for="color_texto">Color del texto: </label>
+                <input type="color" id="color_texto" name="color_texto" />
+            </div>
+                <label>Estilo de fuente:</label>
+                <input type="radio" id="negrita" name="estilo_fuente" value="bold" />
+                <label for="negrita"><strong>Negrita</strong></label>
+                <input type="radio" id="normal" name="estilo_fuente" value="normal" />
+                <label for="normal">Normal</label>
+            </div>
+            <div>                
+                <input type="checkbox" id="acepto" name="acepto" />
+                <label for="acepto">Acepto los términos y condiciones</label>
+            </div>
+            <div>
+                <label for="comentario">Comentario: </label>
+                <textarea id="comentario" name="comentario" rows="4" cols="30"></textarea>
+            </div>
+            <div>
+                <label for="bandas">Bandas: </label>
+                <select id="bandas" name="bandas">
+                    <option value="almendras">Imagine Dragons</option>
+                    <option value="queso">The Weeknd</option>
+                    <option value="hummus">Twenty One Pilots</option></select
+                >
+            </div>
+            <input type="submit" value="Enviar" />
+    </form>
+</body>
+</html>
