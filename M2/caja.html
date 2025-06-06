@@ -1,0 +1,40 @@
+<!-- Contenido (content): El texto o imagen que contiene el elemento.
+
+Relleno interno (padding): Espacio entre el contenido y el borde.
+
+Borde (border): Línea que rodea el padding y el contenido.
+
+Margen (margin): Espacio exterior que separa el elemento de otros elementos.
+
+Este modelo es fundamental para entender cómo se distribuye el espacio en la página. -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Modelo de Caja</title>
+    <style>
+        .caja {
+            width: 300px;
+            background-color: lightblue;
+            padding: 20px;
+            border: 5px solid blue;
+            margin: 30px;
+            text-align: center;
+            box-sizing: border-box; /*Incluye el padding y el borde en el ancho total */
+            /*display: inline-block;  Permite que las cajas se alineen horizontalmente */
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Ejemplo de Modelo de Caja</h2>
+
+    <div class="caja">
+        Soy una caja con contenido, padding, borde y margen.
+    </div>
+    <div class="caja">
+        Soy otra caja con contenido, padding, borde y margen.
+    </div>
+</body>
+</html>
