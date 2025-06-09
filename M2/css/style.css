@@ -6,6 +6,10 @@ p {color: blue;}
 
 .class1 p {color: rgb(122, 89, 28);}
 
+.h1-home {color: orange;}
+
+#id1 {color: purple;}
+
 input[type="text"] {
     border: none;
     border-bottom: 2px solid rebeccapurple;

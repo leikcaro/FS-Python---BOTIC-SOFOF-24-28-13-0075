@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejemplo de Flexbox</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .container {
+      display: flex; /* Convierte el contenedor en un contenedor flex */
+      gap: 10px;
+      padding: 10px;
+      border: 2px dashed #ccc;
+      margin-top: 10px;
+      min-height: 100px;
+    }
+
+    .item {
+      background-color: #4caf50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    .row {
+      flex-direction: row; /* Alineación en fila */
+    }
+
+    .column {
+      flex-direction: column; /* Alineación en columna */
+    }
+
+    .reverse {
+      flex-direction: row-reverse; /* Fila en orden inverso */
+    }
+
+    .reverse_column {
+      flex-direction: column-reverse; /* Columna en orden inverso */
+    }
+    .justify-center {
+      justify-content: center; /* Centrado horizontal */
+    }
+
+    .justify-between {
+      justify-content: space-between; /* Espacio entre elementos */
+    }
+
+    .align-center {
+      align-items: center; /* Centrado vertical */
+    }
+
+    .align-end {
+      align-items: flex-end; /* Alineado abajo */
+    }
+
+    .wrap {
+      flex-wrap: wrap; /* Permitir que los elementos bajen de línea */
+    }
+
+    .align-content-example {
+      flex-wrap: wrap;
+      height: 200px;
+      align-content: space-between; /* Espacio entre filas */
+    }
+
+    .grow .item:nth-child(1) {
+      flex-grow: 1; /* Este crecerá más */
+    }
+
+    .shrink .item {
+      flex-basis: 200px;
+      flex-shrink: 1; /* Permite reducir */
+    }
+
+    .shrink .item:nth-child(2) {
+      flex-shrink: 2; /* Este se reduce el doble */
+    }
+
+    .basis .item {
+      flex-basis: 100px; /* Tamaño inicial */
+    }
+
+    .flex-short .item {
+      flex: 1; /* grow: 1; shrink: 1; basis: 0 */
+    }
+
+    .self-align .item:nth-child(2) {
+      align-self: flex-end; /* Se alinea al final */
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Ejemplos de Flexbox en CSS</h1>
+
+  <div class="section">
+    <h2>1. Direcciones</h2>
+    <div class="container row">
+      <div class="item">Fila 1</div>
+      <div class="item">Fila 2</div>
+    </div>
+    <div class="container column">
+      <div class="item">Columna 1</div>
+      <div class="item">Columna 2</div>
+    </div>
+    <div class="container reverse">
+      <div class="item">Reverso 1</div>
+      <div class="item">Reverso 2</div>
+    </div>
+    <div class="container reverse_column">
+      <div class="item">Columna Reversa 1</div>
+      <div class="item">Columna Reversa 2</div>
+  </div>
+
+  <div class="section">
+    <h2>2. Justify Content</h2>
+    <div class="container justify-center">
+      <div class="item">Centro 1</div>
+      <div class="item">Centro 2</div>
+    </div>
+    <div class="container justify-between">
+      <div class="item">Entre 1</div>
+      <div class="item">Entre 2</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>3. Align Items</h2>
+    <div class="container align-center" style="height: 150px;">
+      <div class="item">Centro 1</div>
+      <div class="item">Centro 2 </div>
+    </div>
+    <div class="container align-end" style="height: 150px;">
+      <div class="item">Abajo 1</div>
+      <div class="item">Abajo 2</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>4. Align Content</h2>
+    <div class="container align-content-example">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+      <div class="item">4</div>
+      <div class="item">5</div>
+      <div class="item">6</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>5. Flex Grow</h2>
+    <div class="container grow">
+      <div class="item">Crece</div>
+      <div class="item">Fijo</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>6. Flex Shrink</h2>
+    <div class="container shrink" style="width: 300px;">
+      <div class="item">Reduce</div>
+      <div class="item">Reduce más</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>7. Flex Basis</h2>
+    <div class="container basis">
+      <div class="item">100px</div>
+      <div class="item">100px</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>8. Flex (abreviado)</h2>
+    <div class="container flex-short">
+      <div class="item">Flex 1</div>
+      <div class="item">Flex 1</div>
+      <div class="item">Flex 1</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>9. Align Self</h2>
+    <div class="container self-align" style="height: 120px;">
+      <div class="item">Normal</div>
+      <div class="item">Abajo</div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejemplos de Position en CSS</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0 20px;
+    }
+
+    h1, h2 {
+      margin-top: 40px;
+    }
+
+    .box {
+      width: 200px;
+      height: 100px;
+      background-color: #4caf50;
+      color: white;
+      padding: 10px;
+      margin-bottom: 30px;
+      border-radius: 5px;
+    }
+
+    .static {
+      /* Valor por defecto: el elemento sigue el flujo normal del documento */
+      position: static;
+    }
+
+    .relative {
+      position: relative;
+      top: 10px;    /* Mueve 10px hacia abajo desde su posición original */
+      left: 20px;   /* Mueve 20px hacia la derecha desde su posición original */
+      background-color: #2196f3;
+    }
+
+    .container {
+      position: relative; /* Contenedor relativo para contener hijos absolute */
+      height: 200px;
+      border: 2px dashed #aaa;
+      margin-bottom: 30px;
+    }
+
+    .absolute {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 150px;
+      background-color: #f44336;
+    }
+
+    .fixed {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      width: 150px;
+      background-color: #ff9800;
+    }
+
+    .scroll-section {
+      height: 800px;
+      background: linear-gradient(#eee, #ccc);
+      padding-top: 20px;
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Propiedad <code>position</code> en CSS</h1>
+
+  <h2>1. position: static (por defecto)</h2>
+  <div class="box static">
+    Este elemento tiene <code>position: static</code>.
+  </div>
+
+  <h2>2. position: relative</h2>
+  <div class="box relative">
+    Este elemento tiene <code>position: relative</code> y se ha movido 10px hacia abajo y 20px a la derecha.
+  </div>
+
+  <h2>3. position: absolute</h2>
+  <div class="container">
+    <div class="box absolute">
+      Este elemento es <code>absolute</code> dentro de un contenedor relativo.
+    </div>
+    Contenedor con <code>position: relative</code>.
+  </div>
+
+  <h2>4. position: fixed</h2>
+  <div class="scroll-section">
+    Haz scroll para ver que este elemento se mantiene fijo en la esquina inferior derecha.
+  </div>
+
+  <div class="box fixed">
+    Soy un elemento con <code>position: fixed</code>
+  </div>
+
+</body>
+</html>
