@@ -1,0 +1,8 @@
+
+.movie-card img {
+  height: 300px;
+  object-fit: cover;
+}
+.modal-body img {
+  max-width: 100%;
+}

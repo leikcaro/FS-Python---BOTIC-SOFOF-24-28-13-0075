@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Galería con jQuery</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+  <h1>Galería de Imágenes</h1>
+  <div class="gallery">
+    <img src="images/image1.jpg" id="img1" class="thumb" data-index="0" alt="Imagen 1">
+    <img src="images/image2.jpg" id="img2" class="thumb" data-index="1" alt="Imagen 2">
+    <img src="images/image3.jpg" id="img3" class="thumb" data-index="2" alt="Imagen 3">
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modal-img">
+    <div class="nav-buttons">
+      <button id="prev">Anterior</button>
+      <button id="next">Siguiente</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" contenido="width=device-width, initial-scale=1.0">
+    <title>Ejemplo con jQuery y jQuery UI</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        #contenido {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        #acordeon {
+            margin-top: 20px;
+        }
+
+        .ui-sel_fecha {
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Ejemplo con jQuery y jQuery UI</h1>
+
+    <!-- Botón para cambiar el contenido -->
+    <button id="b1">Cambiar Contenido</button>
+
+    <!-- Contenedor cuyo contenido será cambiado -->
+    <div id="contenido">Este es el contenido original.</div>
+
+    <!-- Contenedor con efecto hover -->
+    <div id="hover" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;">
+        Pasa el ratón sobre este texto.
+    </div>
+
+    <!-- jQuery UI acordeon -->
+    <div id="acordeon">
+        <h3>Sección 1</h3>
+        <div>
+            <p>Contenido de la sección 1.</p>
+        </div>
+        <h3>Sección 2</h3>
+        <div>
+            <p>Contenido de la sección 2.</p>
+        </div>
+        <h3>Sección 3</h3>
+        <div>
+            <p>Contenido de la sección 3.</p>
+        </div>
+    </div>
+
+    <!-- jQuery UI sel_fecha -->
+    <p>Selecciona una fecha: <input type="text" id="sel_fecha"></p>
+
+    <!-- jQuery y jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Cambiar contenido y estilo de un elemento
+            $('#b1').click(function () {
+                $('#contenido').text('El contenido ha sido cambiado!');
+                $('#contenido').css('color', 'blue');
+            });
+
+            // Agregar efecto hover a un elemento
+            $('#hover').hover(
+                function () {
+                    $(this).css('background-color', 'lightgray');
+                },
+                function () {
+                    $(this).css('background-color', 'white');
+                }
+            );
+
+            // Inicializar el acordeón de jQuery UI
+            $('#acordeon').accordion();
+
+            // Inicializar el selector de fecha de jQuery UI
+            $('#sel_fecha').datepicker();
+        });
+    </script>
+</body>
+
+</html>

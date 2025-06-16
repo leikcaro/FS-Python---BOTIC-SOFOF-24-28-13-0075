@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transiciones con jQuery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .page {
+            display: none;
+            padding: 20px;
+        }
+
+        .active {
+            display: block;
+        }
+
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #007bff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Ejemplo de Transiciones entre Páginas</h1>
+
+    <nav>
+        <a href="#" id="link1">Página 1</a>
+        <a href="#" id="link2">Página 2</a>
+    </nav>
+
+    <div id="page1" class="page active">
+        <h2>Página 1</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, similique cumque id blanditiis doloribus cum ad enim facere tempora accusantium. Est aperiam alias libero et eveniet natus totam eos unde.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, similique cumque id blanditiis doloribus cum ad enim facere tempora accusantium. Est aperiam alias libero et eveniet natus totam eos unde.</p>
+    </div>
+
+    <div id="page2" class="page">
+        <h2>Página 2</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, similique cumque id blanditiis doloribus cum ad enim facere tempora accusantium. Est aperiam alias libero et eveniet natus totam eos unde.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, similique cumque id blanditiis doloribus cum ad enim facere tempora accusantium. Est aperiam alias libero et eveniet natus totam eos unde.</p>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi, numquam quis! Sint accusantium quas in optio temporibus doloribus iusto unde qui consequatur dolores, tempore facere assumenda dicta animi neque expedita.</p>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Mostrar la primera página al cargar
+            $('#page1').slideDown(1000);
+
+            // clics en los enlaces de navegación
+            $('#link1').click(function(e) {
+                e.preventDefault();
+                $('.page').slideUp(300, function() { //callback funcion - programación asincrónica
+                    $('#page1').slideDown(300).addClass('active');
+                }).removeClass('active');//asegura que ninguna otra página esté marcada como activa antes de marcar la nueva página.
+            });
+            //idem
+            $('#link2').click(function(e) {
+                e.preventDefault();
+                $('.page').slideUp(300, function() {
+                    $('#page2').slideDown(300).addClass('active');
+                }).removeClass('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manipulación del DOM</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    h1 {
+      color: darkblue;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="mainTitle">¡Hola, Mundo!</h1>
+  <p>Haz clic en los botones para interactuar con el DOM:</p>
+
+  <button id="btnTitulo">Cambiar título</button>
+  <button id="btnAlerta">Mostrar alerta</button>
+  <button id="btnContador">Contar clics</button>
+  <button id="btnFondo">Color de fondo aleatorio</button>
+
+  <p id="contador">Clicks: 0</p>
+
+  <script>
+    let clickCount = 0;
+
+    // Botón: Cambiar título
+    document.getElementById("btnTitulo").addEventListener("click", function () {
+      const title = document.getElementById("mainTitle");
+      title.textContent = "¡Título Cambiado! 😎";
+    });
+
+    // Botón: Mostrar alerta
+    document.getElementById("btnAlerta").addEventListener("click", function () {
+      alert("¡Estás interactuando con el DOM! 🚀");
+    });
+
+    // Botón: Contar clics
+    document.getElementById("btnContador").addEventListener("click", function () {
+      clickCount++;
+      document.getElementById("contador").textContent = "Clicks: " + clickCount;
+    });
+
+    // Botón: Cambiar color de fondo aleatoriamente
+    document.getElementById("btnFondo").addEventListener("click", function () {
+      const colores = ["#f7c59f", "#a0ced9", "#ff9aa2", "#b5ead7", "#c7ceea"];
+      const colorAleatorio = colores[Math.floor(Math.random() * colores.length)];
+      document.body.style.backgroundColor = colorAleatorio;
+    });
+  </script>
+
+</body>
+</html>
