@@ -1,0 +1,341 @@
+/* ============================================================
+   1) CREACIÓN DE BD Y ESQUEMA
+   ============================================================ */
+DROP DATABASE IF EXISTS tienda_demo;
+CREATE DATABASE tienda_demo
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_0900_ai_ci;
+USE tienda_demo;
+
+-- (Opcional) Para consistencia de zona horaria en NOW()/CURDATE()
+SET time_zone = '-04:00';
+
+-- Tablas principales
+CREATE TABLE clientes (
+  id           INT PRIMARY KEY AUTO_INCREMENT,
+  nombre       VARCHAR(50) NOT NULL,
+  apellido     VARCHAR(50) NOT NULL,
+  email        VARCHAR(120) UNIQUE NOT NULL,
+  telefono     VARCHAR(30),
+  creado_en    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE categorias (
+  id     INT PRIMARY KEY AUTO_INCREMENT,
+  nombre VARCHAR(60) NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE proveedores (
+  id     INT PRIMARY KEY AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE productos (
+  id            INT PRIMARY KEY AUTO_INCREMENT,
+  categoria_id  INT NOT NULL,
+  proveedor_id  INT,
+  nombre        VARCHAR(120) NOT NULL,
+  precio        DECIMAL(10,2) NOT NULL,
+  stock         INT NOT NULL DEFAULT 0,
+  FOREIGN KEY (categoria_id) REFERENCES categorias(id),
+  FOREIGN KEY (proveedor_id) REFERENCES proveedores(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE empleados (
+  id         INT PRIMARY KEY AUTO_INCREMENT,
+  nombre     VARCHAR(50) NOT NULL,
+  apellido   VARCHAR(50) NOT NULL,
+  fecha_ing  DATE NOT NULL,
+  salario    DECIMAL(10,2) NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE pedidos (
+  id           INT PRIMARY KEY AUTO_INCREMENT,
+  cliente_id   INT NOT NULL,
+  fecha_pedido DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  estado       ENUM('PENDIENTE','PAGADO','ENVIADO','CANCELADO') NOT NULL DEFAULT 'PENDIENTE',
+  FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE items_pedido (
+  pedido_id   INT NOT NULL,
+  producto_id INT NOT NULL,
+  cantidad    INT NOT NULL,
+  precio_unit DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (pedido_id, producto_id),
+  FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,
+  FOREIGN KEY (producto_id) REFERENCES productos(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE pagos (
+  id           INT PRIMARY KEY AUTO_INCREMENT,
+  pedido_id    INT NOT NULL,
+  monto        DECIMAL(10,2) NOT NULL,
+  fecha_pago   DATETIME NOT NULL,
+  metodo       ENUM('TARJETA','TRANSFERENCIA','EFECTIVO') NOT NULL,
+  FOREIGN KEY (pedido_id) REFERENCES pedidos(id)
+) ENGINE=InnoDB;
+
+/* ============================================================
+   2) DATOS DE EJEMPLO
+   ============================================================ */
+INSERT INTO categorias (nombre) VALUES
+ ('Tecnología'), ('Hogar'), ('Deportes');
+
+INSERT INTO proveedores (nombre) VALUES
+ ('Andes Tech SpA'), ('Casa&Deco Ltda'), ('SportLife SA');
+
+INSERT INTO productos (categoria_id, proveedor_id, nombre, precio, stock) VALUES
+ (1, 1, 'Notebook PythonBook 14"', 699000, 12),
+ (1, 1, 'Mouse Inalámbrico Pro',    12990,  80),
+ (1, 1, 'Teclado Mecánico Azul',     45990,  35),
+ (2, 2, 'Aspiradora Ciclónica 2L',   89990,  18),
+ (2, 2, 'Lámpara LED Escritorio',    15990, 120),
+ (3, 3, 'Bicicleta Gravel 52',      899000,   5),
+ (3, 3, 'Casco MTB Serie X',         54990,  22);
+
+INSERT INTO clientes (nombre, apellido, email, telefono, creado_en) VALUES
+ ('Ana','Muñoz','ana.munoz@example.com','+56 9 1111 1111','2025-07-28 10:15:00'),
+ ('Luis','Pérez','luis.perez@example.com','+56 9 2222 2222','2025-08-01 09:00:00'),
+ ('María','Gómez','maria.gomez@example.com','+56 9 3333 3333','2025-08-05 15:40:00'),
+ ('Pedro','Rojas','pedro.rojas@example.com','+56 9 4444 4444','2025-08-10 18:20:00'),
+ ('Sofía','Caro','sofia.caro@example.com','+56 9 5555 5555','2025-08-12 11:00:00'),
+ ('Jorge','Díaz','jorge.diaz@example.com','+56 9 6666 6666','2025-08-17 12:30:00');
+
+INSERT INTO empleados (nombre, apellido, fecha_ing, salario) VALUES
+ ('Carla','Lagos','2023-03-01', 1200000.00),
+ ('Tomás','Ibarra','2024-01-15',  950000.00),
+ ('Daniela','Vera','2022-11-20', 1350000.00);
+
+-- Pedidos
+INSERT INTO pedidos (cliente_id, fecha_pedido, estado) VALUES
+ (1, '2025-08-02 14:10:00', 'PAGADO'),
+ (2, '2025-08-03 09:30:00', 'ENVIADO'),
+ (3, '2025-08-05 16:00:00', 'PENDIENTE'),
+ (1, '2025-08-12 10:00:00', 'CANCELADO'),
+ (5, '2025-08-12 10:05:00', 'PAGADO'),
+ (6, '2025-08-18 19:20:00', 'PENDIENTE');
+
+-- Items de pedido
+INSERT INTO items_pedido (pedido_id, producto_id, cantidad, precio_unit) VALUES
+ (1, 1, 1, 699000.00), -- Ana compra Notebook
+ (1, 2, 1,  12990.00),
+ (2, 4, 1,  89990.00), -- Luis compra Aspiradora
+ (2, 5, 2,  15990.00),
+ (3, 6, 1, 899000.00), -- María compra Bicicleta (pendiente)
+ (4, 2, 2,  12990.00), -- Pedido cancelado
+ (5, 3, 1,  45990.00), -- Sofía compra Teclado
+ (5, 7, 1,  54990.00),
+ (6, 1, 1, 699000.00); -- Jorge pedido pendiente
+
+-- Pagos
+INSERT INTO pagos (pedido_id, monto, fecha_pago, metodo) VALUES
+ (1, 712990.00, '2025-08-02 14:15:00', 'TARJETA'),
+ (2, 121970.00, '2025-08-03 09:45:00', 'TRANSFERENCIA'),
+ (5, 100980.00, '2025-08-12 10:10:00', 'EFECTIVO');
+
+/* ============================================================
+   3) QUERIES POR TEMA/FUNCIÓN
+   (cada bloque es independiente: puedes ejecutarlos de a uno)
+   ============================================================ */
+
+-- ------------------------------------------------------------
+-- MANIPULACIÓN DE CADENA: CONCAT, LENGTH, SUBSTRING, UPPER, LOWER
+-- ------------------------------------------------------------
+-- Nombre completo en MAYÚSCULAS y correo en minúsculas, más longitud del email
+SELECT 
+  c.id,
+  CONCAT(UPPER(c.nombre), ' ', UPPER(c.apellido)) AS nombre_completo_upper,
+  LOWER(c.email)                                  AS email_lower,
+  LENGTH(c.email)                                  AS largo_email,
+  SUBSTRING(c.email, 1, 5)                         AS email_prefix
+FROM clientes c
+ORDER BY c.id;
+
+-- Slug de producto (minúsculas + guiones)
+SELECT 
+  p.id,
+  p.nombre,
+  REPLACE(LOWER(p.nombre), ' ', '-') AS slug
+FROM productos p
+ORDER BY p.id;
+
+-- ------------------------------------------------------------
+-- FUNCIONES NUMÉRICAS: SUM, AVG, MAX, MIN, ROUND
+-- ------------------------------------------------------------
+-- Estadísticas de precio por categoría
+SELECT 
+  cat.nombre                              AS categoria,
+  COUNT(*)                                AS n_productos,
+  MIN(p.precio)                           AS min_precio,
+  MAX(p.precio)                           AS max_precio,
+  ROUND(AVG(p.precio), 0)                 AS precio_promedio_redondeado,
+  SUM(p.stock)                            AS stock_total
+FROM productos p
+JOIN categorias cat ON cat.id = p.categoria_id
+GROUP BY cat.id, cat.nombre
+ORDER BY precio_promedio_redondeado DESC;
+
+-- Total por pedido (SUM de cantidad * precio_unit)
+SELECT 
+  i.pedido_id,
+  ROUND(SUM(i.cantidad * i.precio_unit), 0) AS total_pedido
+FROM items_pedido i
+GROUP BY i.pedido_id
+ORDER BY total_pedido DESC;
+
+-- ------------------------------------------------------------
+-- FECHA Y HORA: NOW, CURDATE, CURTIME, DATE_FORMAT, DAY, MONTH, YEAR
+-- ------------------------------------------------------------
+SELECT 
+  NOW()                         AS ahora,
+  CURDATE()                     AS hoy,
+  CURTIME()                     AS hora_actual,
+  DATE_FORMAT(NOW(), '%d-%m-%Y %H:%i') AS formateado,
+  DAY(NOW())                    AS dia,
+  MONTH(NOW())                  AS mes,
+  YEAR(NOW())                   AS anio;
+
+-- Pedidos de agosto 2025 con fecha formateada
+SELECT 
+  p.id,
+  DATE_FORMAT(p.fecha_pedido, '%Y-%m-%d %H:%i') AS fecha_fmt,
+  p.estado
+FROM pedidos p
+WHERE YEAR(p.fecha_pedido) = 2025
+  AND MONTH(p.fecha_pedido) = 8
+ORDER BY p.fecha_pedido DESC;
+
+-- ------------------------------------------------------------
+-- AGREGACIÓN: COUNT, GROUP_CONCAT, AVG, SUM
+-- ------------------------------------------------------------
+-- Clientes con lista de productos por pedido (GROUP_CONCAT ordenado)
+SELECT 
+  pe.id                              AS pedido_id,
+  CONCAT(c.nombre,' ',c.apellido)    AS cliente,
+  GROUP_CONCAT(
+    CONCAT(pr.nombre, ' x', i.cantidad)
+    ORDER BY pr.nombre
+    SEPARATOR ', '
+  ) AS productos
+FROM pedidos pe
+JOIN clientes c     ON c.id = pe.cliente_id
+JOIN items_pedido i ON i.pedido_id = pe.id
+JOIN productos pr   ON pr.id = i.producto_id
+GROUP BY pe.id, cliente
+ORDER BY pe.id;
+
+-- Cantidad de pedidos por estado
+SELECT 
+  estado,
+  COUNT(*) AS n_pedidos
+FROM pedidos
+GROUP BY estado
+ORDER BY n_pedidos DESC;
+
+-- Ticket promedio (promedio del total por pedido pagado/enviado)
+WITH totales AS (
+  SELECT i.pedido_id, SUM(i.cantidad * i.precio_unit) AS total_bruto
+  FROM items_pedido i
+  GROUP BY i.pedido_id
+)
+SELECT 
+  ROUND(AVG(t.total_bruto), 0) AS ticket_promedio
+FROM totales t
+JOIN pedidos p ON p.id = t.pedido_id
+WHERE p.estado IN ('PAGADO','ENVIADO');
+
+-- ------------------------------------------------------------
+-- CONTROL DE FLUJO: IF, CASE
+-- ------------------------------------------------------------
+-- Clasificar pedidos por total en rangos con CASE
+WITH totales AS (
+  SELECT i.pedido_id, SUM(i.cantidad * i.precio_unit) AS total_bruto
+  FROM items_pedido i
+  GROUP BY i.pedido_id
+)
+SELECT
+  p.id AS pedido_id,
+  ROUND(t.total_bruto,0) AS total,
+  CASE
+    WHEN t.total_bruto >= 500000 THEN 'ALTO'
+    WHEN t.total_bruto >= 100000 THEN 'MEDIO'
+    ELSE 'BAJO'
+  END AS segmento_ticket,
+  p.estado
+FROM pedidos p
+JOIN totales t ON t.pedido_id = p.id
+ORDER BY t.total_bruto DESC;
+
+-- Usando IF para marcar si el pedido tiene pago registrado
+SELECT 
+  p.id AS pedido_id,
+  IF(pg.id IS NULL, 'SIN PAGO', 'CON PAGO') AS estado_pago
+FROM pedidos p
+LEFT JOIN pagos pg ON pg.pedido_id = p.id
+ORDER BY p.id;
+
+-- ------------------------------------------------------------
+-- CONVERSIÓN DE DATOS: CAST, CONVERT
+-- ------------------------------------------------------------
+-- 1) CAST de texto a DECIMAL y multiplicación
+SELECT 
+  '19990.50'                              AS texto_precio,
+  CAST('19990.50' AS DECIMAL(10,2))       AS precio_decimal,
+  CAST('2' AS UNSIGNED) * CAST('19990.50' AS DECIMAL(10,2)) AS total;
+
+-- 2) CONVERT de fecha a texto con charset explícito (ejemplo trivial)
+SELECT 
+  CONVERT(DATE_FORMAT(NOW(), '%Y/%m/%d') USING utf8mb4) AS fecha_utf8;
+
+-- 3) CAST fecha_pedido (DATETIME) a DATE
+SELECT 
+  id AS pedido_id,
+  CAST(fecha_pedido AS DATE) AS solo_fecha
+FROM pedidos
+ORDER BY id;
+
+-- ------------------------------------------------------------
+-- ORDER BY + WHERE + OFFSET (LIMIT offset, row_count)
+-- ------------------------------------------------------------
+-- Productos de Tecnología ordenados por precio DESC, saltando 1 y trayendo 3
+SELECT 
+  p.id, p.nombre, p.precio
+FROM productos p
+JOIN categorias c ON c.id = p.categoria_id
+WHERE c.nombre = 'Tecnología'
+ORDER BY p.precio DESC
+LIMIT 1, 3;  -- OFFSET 1, luego 3 filas
+
+-- Pedidos PAGADOS más recientes, con paginación: página 2 (offset 2, 3 filas)
+SELECT 
+  p.id, p.estado, DATE_FORMAT(p.fecha_pedido, '%Y-%m-%d %H:%i') AS fecha
+FROM pedidos p
+WHERE p.estado = 'PAGADO'
+ORDER BY p.fecha_pedido DESC
+LIMIT 2, 3;
+
+-- ------------------------------------------------------------
+-- EXTRAS ÚTILES
+-- ------------------------------------------------------------
+-- Vista: total por pedido (para reutilizar en ejercicios)
+DROP VIEW IF EXISTS v_total_pedido;
+CREATE VIEW v_total_pedido AS
+SELECT 
+  i.pedido_id,
+  SUM(i.cantidad * i.precio_unit) AS total_bruto
+FROM items_pedido i
+GROUP BY i.pedido_id;
+
+-- Usar la vista + CASE + JOIN a pagos
+SELECT 
+  p.id AS pedido_id,
+  ROUND(v.total_bruto,0) AS total,
+  CASE WHEN pg.id IS NULL THEN 'PENDIENTE DE PAGO' ELSE 'PAGO REGISTRADO' END AS pago_estado,
+  p.estado,
+  DATE_FORMAT(p.fecha_pedido, '%d-%m-%Y') AS fecha
+FROM pedidos p
+LEFT JOIN v_total_pedido v ON v.pedido_id = p.id
+LEFT JOIN pagos pg         ON pg.pedido_id = p.id
+ORDER BY p.fecha_pedido DESC;
+
