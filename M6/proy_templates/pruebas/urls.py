@@ -4,5 +4,6 @@ from .views import *
 urlpatterns = [
     path('matematicas/', matematicas, name='matematicas'),
     path('historia/', historia, name='historia'),  # Nueva ruta para la vista historia
-    path('ciencias/', ciencias, name='ciencias'),  # Nueva ruta para la
+    path('ciencias/', ciencias, name='ciencias'),  # Nueva ruta para ciencias
+    path('lista_profesores/', lista_profesores, name='lista_profesores'),  # Nueva ruta para lista_profesores
 ]

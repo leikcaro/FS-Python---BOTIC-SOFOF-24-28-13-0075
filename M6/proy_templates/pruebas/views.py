@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import Profesor
 
 # Create your views here.
 def matematicas(request):
@@ -19,3 +20,8 @@ def historia(request):
 
 def ciencias(request):
     return render(request, 'ciencias.html')
+
+def lista_profesores(request):
+    profesores = Profesor.objects.all()
+    context = {'profesores': profesores}
+    return render(request, 'lista_profesores.html', context)
